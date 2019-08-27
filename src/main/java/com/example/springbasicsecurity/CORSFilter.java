@@ -13,9 +13,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-/*
-//@Configuration
-//@Order(-1)
+import org.springframework.stereotype.Component;
+
+@Component
+@Order(-1000)
 public class CORSFilter implements Filter {
 
     private FilterConfig config;
@@ -40,6 +41,7 @@ public class CORSFilter implements Filter {
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Headers", "x-requested-with, authorization, Content-Type, Authorization, credential, X-XSRF-TOKEN");
+        System.out.println("inside do filter oke");
 
         if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
 System.out.println("inside options oke");
@@ -54,4 +56,4 @@ System.out.println("inside options oke");
     public void init(FilterConfig filterConfig) throws ServletException {
         config = filterConfig;
     }
-}*/
+}

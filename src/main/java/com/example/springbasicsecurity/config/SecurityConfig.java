@@ -1,5 +1,7 @@
 package com.example.springbasicsecurity.config;
 
+
+
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.savedrequest.NullRequestCache;
@@ -30,19 +33,39 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;*/
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 	
+	@Autowired
+	private DataSource dataSource;
 	
 	@Autowired
 	private AuthenticationEntryPoint authEntryPoint;
 	 
-    @Autowired
+   /* @Autowired
     protected void configure(AuthenticationManagerBuilder builder) throws Exception {
     	 builder.inMemoryAuthentication()
          .withUser("admin")
          .password("{noop}password")
-         .roles("USER");
+         .roles("ADMIN");
+    	 builder.inMemoryAuthentication()
+    	  .withUser("ramesh")
+    	  .password("kumar")
+    	  .roles("USER");
+    
+    }*/
+    
+    @Override
+    protected void configure(AuthenticationManagerBuilder builder) throws Exception {
+        builder.jdbcAuthentication()
+        	/*.usersByUsernameQuery("select username, password, enabled"
+                + " from users where username=?")
+            .authoritiesByUsernameQuery("select username, authority "
+                + "from authorities where username=?")*/
+               .dataSource(dataSource)
+               .passwordEncoder(NoOpPasswordEncoder.getInstance());
+        
+        
     }
     
-///*   
+       
    @Override
 	protected void configure(HttpSecurity http) throws Exception {
 	   super.configure(http);
@@ -54,8 +77,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				.authenticationEntryPoint(authEntryPoint);
 	}
 //*/
-   
-   
    
 	
 }

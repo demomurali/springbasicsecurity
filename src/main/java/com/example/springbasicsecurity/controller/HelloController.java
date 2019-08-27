@@ -1,5 +1,8 @@
 package com.example.springbasicsecurity.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,7 +21,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
+
+@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*", maxAge = 3600)
 @RestController
 public class HelloController {
 
@@ -36,11 +40,13 @@ public class HelloController {
 
 	
 	@GetMapping("employees")
-	public Employee getEmployees(){
+	public List<Employee> getEmployees(){
+		List <Employee>employees=new ArrayList<Employee>();
 		Employee e=new Employee();
 		e.setId(1001);
 		e.setName("hello");
-		return e;
+		employees.add(e);
+		return employees;
 	}
 
 	
